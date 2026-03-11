@@ -1,0 +1,18 @@
+pip install pyinstaller
+
+python -m PyInstaller --onefile --windowed --name "INSAnalyser" gui.py
+
+**4. Your `.exe` will be at:**
+```
+your_folder/
+└── dist/
+    └── INSAnalyser.exe   ← share this file
+
+
+If you get a missing module error, add hidden imports:
+
+powershellpython -m PyInstaller --onefile --windowed --hidden-import=numpy --name "INSAnalyser" gui.py
+
+Optional — add a custom icon:
+
+powershellpython -m PyInstaller --onefile --windowed --icon=icon.ico --name "INSAnalyser" gui.py
