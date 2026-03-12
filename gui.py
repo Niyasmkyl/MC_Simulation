@@ -279,7 +279,7 @@ class App(tk.Tk):
         if not dc['ok']:
             w(f"\n  ✘  DESIGN NOT OK\n", "fail")
             w(f"  ➤  Recommended Diameter :  ", "recommend_label")
-            w(f"{dc['D_req']:.3f} m\n", "recommend_val")
+            w(f"{dc['D_req']:.4f} m\n", "recommend_val") #accuracy .4 decimal places
         else:
             w(f"\n  ✔  Design OK\n", "pass")
         w(f"\n  {sep}\n", "sep")
