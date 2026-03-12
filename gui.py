@@ -275,19 +275,8 @@ class App(tk.Tk):
         w(f"{r['beamwidth']:.4f} deg\n")
         w(f"\n  {sep}\n", "sep")
 
-        # ── Error budget
-        w("  ERROR BUDGET\n", "heading")
-        w(f"  {'Pointing requirement':<26}", "label"); w(f"0.1000 deg\n")
-        w(f"  {'Gimbal':<26}", "label");    w(f"0.0500 deg\n")
-        w(f"  {'Structure':<26}", "label"); w(f"0.0400 deg\n")
-        w(f"  {'Tracking':<26}", "label");  w(f"0.0300 deg\n")
-        w(f"  {'Allowable INS RMS':<26}", "label")
-        w(f"{r['theta_INS_allow']:.4f} deg  ← budget\n", "warn")
-        w(f"\n  {sep}\n", "sep")
-
         # ── MC results — each sensor gets a prominent block
-        w("  MONTE-CARLO RESULTS  (500 runs)\n", "heading")
-        w(f"  MC step dt = 0.1 s\n\n", "dim")
+        w("   RESULTS  \n\n", "heading")
 
         for name, vals in r['results'].items():
             rms    = vals['rms']
