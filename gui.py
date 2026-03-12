@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import ttk, scrolledtext
 import threading
 
-from backend import run_analysis
+from backend import run_analysis ,check_diameter
 
 # ── Palette ──────────────────────────────────────────────────────
 BG       = "#0a0e14"
@@ -166,6 +166,8 @@ class App(tk.Tk):
         self.out_box.tag_config("pref_label",   foreground=DIM,     font=(MONO, 11, "bold"))
         self.out_box.tag_config("pref_pass",    foreground=GREEN,   font=(MONO, 20, "bold"))
         self.out_box.tag_config("pref_none",    foreground=RED,     font=(MONO, 20, "bold"))
+        self.out_box.tag_config("recommend_label", foreground=YELLOW, font=(MONO, 10, "bold"))
+        self.out_box.tag_config("recommend_val",   foreground=YELLOW, font=(MONO, 14, "bold"))
 
         # ── Clear output button (sits below the text box)
         btn_bar = tk.Frame(outer, bg=BG)
@@ -273,6 +275,13 @@ class App(tk.Tk):
         w("  ANTENNA\n", "heading")
         w(f"  {'Beamwidth (HPBW)':<26}", "label")
         w(f"{r['beamwidth']:.4f} deg\n")
+        dc = r['diam_check']
+        if not dc['ok']:
+            w(f"\n  ✘  DESIGN NOT OK\n", "fail")
+            w(f"  ➤  Recommended Diameter :  ", "recommend_label")
+            w(f"{dc['D_req']:.3f} m\n", "recommend_val")
+        else:
+            w(f"\n  ✔  Design OK\n", "pass")
         w(f"\n  {sep}\n", "sep")
 
         # ── MC results — each sensor gets a prominent block

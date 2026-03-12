@@ -17,6 +17,30 @@ THETA_GIMBAL    = 0.05
 THETA_STRUCTURE = 0.04
 THETA_TRACKING  = 0.03
 
+def check_diameter(f_hz: float, D: float) -> dict:
+    """
+    Check if the inputted diameter is valid for the given frequency.
+    Mirrors the MATLAB logic:
+        theta = 70*lambda/D
+        if pointing <= theta/10  →  Design OK
+        else                     →  Design NOT OK, recommend D_req
+    Returns dict with keys:
+        ok         : bool
+        theta_hpbw : float  (deg)
+        D_req      : float | None  (recommended diameter if not OK)
+    """
+    c          = 3e8
+    lambda_val = c / f_hz
+    theta_hpbw = 70 * lambda_val / D
+ 
+    if THETA_POINTING <= theta_hpbw / 10:
+        return {'ok': True,  'theta_hpbw': theta_hpbw, 'D_req': 'Design OK'}
+    
+    else:
+        theta_req = 10 * THETA_POINTING
+        D_req     = 70 * lambda_val / theta_req
+        return {'ok': False, 'theta_hpbw': theta_hpbw, 'D_req': D_req}
+ 
 
 def run_analysis(f_hz: float, D: float, T_sec: float) -> dict:
     """
@@ -41,6 +65,9 @@ def run_analysis(f_hz: float, D: float, T_sec: float) -> dict:
     lambda_val = c / f_hz
     theta_BW   = (70 * lambda_val) / D
 
+    # ── Diameter / frequency check (MATLAB logic)
+    diam_check = check_diameter(f_hz, D)
+    
     # Error budget
     remaining = (THETA_POINTING**2
                  - THETA_GIMBAL**2
@@ -73,4 +100,5 @@ def run_analysis(f_hz: float, D: float, T_sec: float) -> dict:
         'theta_INS_allow': theta_INS_allow,
         'results':         results,
         'passing':         passing,
+        'diam_check':      diam_check,
     }
