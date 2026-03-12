@@ -1,6 +1,7 @@
 import numpy as np
 
 def MC(sensor, T_hr, dt_sec, dt_hr, N, MC_runs):
+    np.random.seed(42) # fixed seed for reproducibility
     theta_final = np.zeros(MC_runs)
     for m in range(MC_runs):
         # Constant bias error
